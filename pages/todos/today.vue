@@ -1,5 +1,5 @@
 <template>
     <div>
-       <Profile/>
+        <TodoList :today="true"/>
     </div>
 </template>

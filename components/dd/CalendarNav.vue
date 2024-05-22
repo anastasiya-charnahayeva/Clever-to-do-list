@@ -1,0 +1,269 @@
+<template>
+      <div class="calendar__nav">
+        <h4 class="calendar__header--label">Calendar View</h4>
+        <div class="calendar__button--control">
+          <div class="calendar__nav--right">
+            <button class="calendar__button--active">Month</button>
+            <button>Week</button>
+            <button>Day</button>
+          </div>
+        </div>
+        <div class='calendar__button--control'>
+            <div class="calendar__nav--left">
+                <button class="calendar__button--active">Today</button>
+                <button @click="nextMonth">Back</button>
+                <button @click="prevMonth">Next</button>
+            </div>
+            <h2 class="calendar__month--title">
+                {{currentMonthTitle}}
+            </h2>
+        </div>
+      </div>
+</template>
+
+<script setup lang="ts">
+import moment from 'moment';
+const currentMonthIndex = ref<number>(0);
+const currentMonthTitle = computed(() => {
+    return moment().startOf('month').add(currentMonthIndex.value, 'month').format('MMMM YYYY');
+});
+
+const nextMonth = () => {
+    currentMonthIndex.value = currentMonthIndex.value + 1;
+};
+
+const prevMonth = () => {
+    currentMonthIndex.value = currentMonthIndex.value - 1;
+};
+
+onMounted(() => {
+    currentMonthIndex.value = new Date().getMonth();
+});
+</script>
+
+<style>
+/**
+ * Base
+ *
+ */
+
+ @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700&display=swap');
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #F0F0F7;
+}
+
+/**
+ * components/CalendarNav
+ *
+ */
+h1,h2,h3,h4,h5,h6{
+  margin: 0;
+  padding: 0;
+}
+
+ .calendar{
+  padding: 0 2em 2.5em;
+  background: #FFFFFF;
+  width: 1170px;;
+ }
+
+.calendar__nav {
+    display: flex;
+    flex-direction: column;
+  }
+.calendar__month--title{
+    justify-content: center;
+    flex-grow: 500;
+    margin: 15px 0 20px 0;
+}
+
+.calendar__nav h2 {
+    font-size: 18px;
+    font-weight: normal;
+    text-align: center;
+    color:#4D4F5C;
+    padding-right: 9.5em;
+}
+.calendar__nav button {
+    padding: 0;
+    cursor: pointer;
+    text-align: center;
+    border: 0;
+    outline: 0;
+}
+
+/**
+ * components/CalendarHeader
+ *
+ */
+.calendar__header {
+  display: flex;
+  background: #F5F6FA;
+  border-top: 1px solid #EAF0F4;
+  border-left:1px solid #EAF0F4;
+  border-right: 1px solid #EAF0F4;
+}
+
+.calendar__header div {
+  flex: 1;
+  margin: 1.5em 4.5em;
+  font-size: 11px;
+  font-weight: bold;
+  color:#A3A6B4;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/**
+ * Week
+ *
+ */
+.week {
+    display: flex;
+    border-collapse: collapse;
+}
+
+/**
+ * Days of the week
+ *
+ */
+.week__day {
+    /* position: relative; */
+    /* padding-bottom: 4rem;
+    padding-right: 0.5em;
+    padding-top: 0.5em; */
+    min-height: 8.39em;
+    min-width: 3em;
+    flex: 1;
+  }
+  .week__day p{
+  text-align:right;
+  padding-right: 0.5em;
+  padding-top: 0.5em;
+}
+.week__day {
+  border-radius: 0;
+  border-top: 1px solid #EAF0F4;
+  border-left: 1px solid #EAF0F4;
+}
+
+.week__day:last-child{
+  /* border-bottom: 1px solid #EAF0F4; */
+  border-right: 1px solid #EAF0F4;
+}
+.week:last-child .week__day{
+  border-bottom: 1px solid #EAF0F4;
+}
+.week__day:hover{
+background: #F5F6FA;
+}
+
+.week__day--today {
+  color: white;
+  background-color: #F5F6FA;
+}
+
+.week__day--weekend {
+  color: #3e3e3e;
+  /* background-color: #f3f3f3; */
+}
+
+.week__day--past:hover {
+  background: none;
+}
+
+.week__day--past {
+  cursor: not-allowed;
+  color: rgb(67, 66, 93, 0.3);
+}
+
+.week__day--selected {
+  cursor: pointer;
+  background: #534;
+  background-color: rgba(21,146,230,0.33);
+}
+
+/**
+ * Reminders
+ *
+ */
+ .reminder{
+    padding:  0.3em;
+    margin-top: 1px;
+    background-color: #3B86FF;
+    color: #fff;
+    border-radius: 0.4em;
+ }
+.reminder__label {
+    /* width: 100%; */ 
+  padding-left: 10px;
+    text-align: left;
+}
+
+.reminder__label.reminder__label--work {
+    background-color: lightcoral;
+}
+
+.reminder__label.reminder__label--calendar {
+    background-color: lightgreen;
+}
+
+.calendar__button--control{
+  display: flex;
+}
+
+.calendar__button--control .calendar__nav--right{
+  margin: 0;
+  justify-content: space-around;
+  margin-left: 887px;
+}
+
+.calendar__button--control .calendar__nav--left{
+  border: 1px solid #D7DAE2;
+  border-radius: 4px;
+  margin: 15px 0 20px 0;
+}
+.calendar__nav--left button {
+  justify-content: center;
+}
+
+.calendar__button--control .calendar__nav--right {
+  border: 1px solid #D7DAE2;
+  border-radius: 4px;
+}
+
+.calendar__header .button__right button{
+  justify-content: flex-end;
+}
+.calendar__button--control button{
+  font-weight: normal;
+  /* margin: 0px 1px 0px 1px; */
+  padding: 8px 12.5px 7px 12.5px;
+  color: #4D4F5C;
+  border-right: 1px solid #D7DAE2;
+}
+.calendar__button--control button:last-child{
+  border: none;
+  /* margin-left: 1px; */
+}
+.calendar__button--control button:hover{
+  background: #F0F0F7;
+  /* padding-left: -1px; */
+}
+.calendar__button--control .calendar__button--active{
+  color: #3B86FF;
+}
+.calendar__button--top{
+  color: #4D4F5C;
+}
+.calendar__header--label{
+  font-size: 18px;
+  font-weight: normal; 
+  color: #4D4F5C;
+  padding-top: 20px;
+}
+</style>

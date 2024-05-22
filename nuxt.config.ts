@@ -8,7 +8,6 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-
   // we deactivate the Server Side Rendering
   ssr: false,
 

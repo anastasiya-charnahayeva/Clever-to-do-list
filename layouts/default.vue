@@ -1,9 +1,17 @@
 <template>
   <div>
-    <Header/>
+    <Header v-if="showHeader"/>
     <slot />
   </div>
 </template>
+
+<script setup lang="ts">
+const router = useRouter();
+const showHeader = computed(() => {
+  if (['/login', '/register'].includes(router.currentRoute.value.path)) return false;
+  return true;
+})
+</script>
 <style>
   .btn {
     @apply py-2 px-4;

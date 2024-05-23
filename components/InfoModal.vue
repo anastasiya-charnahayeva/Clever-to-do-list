@@ -20,7 +20,7 @@
                       <h2 class="text-center text-xl mb-4">{{showDateTitle}}</h2>
                       <TodoItem v-for="todo in filteredTodos" :key="todo.id" :todo="todo" @toggleChanging="(e) => changeStatus(e, todo.id)" @removeItem="(e) => remove(e, todo.id)" :infoModal="true"/>
                   </div>
-                  <button class="text-xs bg-transparent hover:bg-red-500 text-red-700 hover:text-white border border-red-500 hover:border-transparent rounded-full h-8 w-8 pb-1 flex items-center justify-center" @click="$emit('close')">
+                  <button class="text-xs mt-2 bg-transparent hover:bg-red-500 text-red-700 hover:text-white border border-red-500 hover:border-transparent rounded-full h-8 w-8 pb-1 flex items-center justify-center" @click="$emit('close')">
                       &#9587;
                   </button>
                 </div>
@@ -48,28 +48,20 @@ const props = defineProps({
 });
 const { date, showInfoModal } = props;
 const filteredTodos = ref<any>(todos);
-const changeStatus = (e: boolean, id: string) => {
-  console.log("e", e, id);
-  const idx = todos.findIndex(todo => todo.id === id);
-  console.log("idx",idx);
-  todos[idx].done = e;
-  //изменить в сторе
+const changeStatus = async (e: boolean, id: string) => {
+  await todosStore.changeStatus(e, id);
   updateFilteredTodos();
 }
 
-const remove = (e: any, id: string) => {
-  console.log("iuu")
-  const idx = todos.findIndex(todo => todo.id === id);
-  todos.splice(idx, 1);
+const remove = async (e: any, id: string) => {  
+  await todosStore.remove(e, id);
   updateFilteredTodos();
-  //изменить в сторе
 }
 
 const updateFilteredTodos = () => {
    const startDate = new Date(date);
       filteredTodos.value = todos.filter((todo) => {
         const todoDate = new Date(todo.date);
-        console.log(todoDate)
         if (todoDate.getFullYear() == startDate.getFullYear() &&
          todoDate.getMonth() == startDate.getMonth() &&
          todoDate.getDate() == startDate.getDate())         

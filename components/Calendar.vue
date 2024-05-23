@@ -47,7 +47,7 @@
 <script setup lang="ts">
 const maxContainIndex = 2;
 const todosStore = useTodosStore();
-const todos = todosStore.getTodos;
+const todos = todosStore.todos;
 const showInfoModal = ref<boolean>(false);
 const currentYear = ref<number>(new Date().getFullYear());
 const currentMonth = ref<number>(new Date().getMonth());
@@ -106,13 +106,9 @@ const showNextMonth = () => {
 };
 const isToday = (day: any) => {
         let today = new Date();
-        console.log(day?.date === today.getDate() && currentMonth.value === today.getMonth() && currentYear.value === today.getFullYear()
-        )
         return day.date === today.getDate() && currentMonth.value === today.getMonth() && currentYear.value === today.getFullYear();
 }
 const selectDay = (day: any) => {
-    console.log('selectedDay',selectedDay );
-    console.log(day);
         if (selectedDay.value == day) {
             day.selected = false;
             selectedDay.value = null;
@@ -125,10 +121,6 @@ const selectDay = (day: any) => {
             selectedDay.value = day;
             showInfoModal.value = true;
         }
-
-        // Zaktualizuj wybraną datę w store
-        //let selectedDate = new Date(currentYear.value, currentMonth.value, day.date);
-        /**this.$store.commit('setSelectedDate', selectedDate);*/
 };
 const createCalendar = () => {
         weeks.value = [];

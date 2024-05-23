@@ -56,7 +56,7 @@
                                 </button>
                             </div>
                         </div>
-                        <button class="text-xs bg-transparent hover:bg-red-500 text-red-700 hover:text-white border border-red-500 hover:border-transparent rounded-full h-8 w-8 pb-1 flex items-center justify-center" @click="$emit('close')">
+                        <button class="text-xs mt-2 bg-transparent hover:bg-red-500 text-red-700 hover:text-white border border-red-500 hover:border-transparent rounded-full h-8 w-8 pb-1 flex items-center justify-center" @click="$emit('close')">
                             &#9587;
                         </button>
                 </div>
@@ -92,12 +92,12 @@ const done = ref<boolean>(false);
 
 
 const saveData = () => {
-    console.log('eee', {name: name.value, description: description.value, done: done.value, id: data?.id, date: date.value})
     emit('saveData', {name: name.value, description: description.value, done: done.value, id: data?.id, date: date.value});
 }
 
 onMounted(() => {
     if (data) {
+        console.log("pp", data)
         name.value = data?.name;
         description.value = data?.description;
         done.value = data?.done;

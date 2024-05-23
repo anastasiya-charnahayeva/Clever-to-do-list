@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 const todosStore = useTodosStore();
-const todos = todosStore.getTodos;
+const todos = todosStore.todos;
 const filteredTodos = ref<any>(todos);
 const showModal = ref<Boolean>(false);
 const modalData = ref<Object>({
@@ -29,44 +29,25 @@ const props = defineProps({
 });
 const { today } = props;
 
-const changeStatus = (e: boolean, id: string) => {
-  console.log("e", e, id);
-  const idx = todos.findIndex(todo => todo.id === id);
-  console.log("idx",idx);
-  todos[idx].done = e;
-  //изменить в сторе
+const changeStatus = async (e: boolean, id: string) => {  
+  await todosStore.changeStatus(e, id);
   updateFilteredTodos();
 }
 
 const edit = (e: any, id: string) => {
   showModal.value = true;
-  modalData.value = todos.find(todo => todo.id === id);
-  console.log("m", modalData.value);
-  updateFilteredTodos();
-  
-  //изменить в сторе
+  modalData.value = todos.find(todo => todo.id === id); 
 }
 
-const remove = (e: any, id: string) => {
-  const idx = todos.findIndex(todo => todo.id === id);
-  todos.splice(idx,1);
-  console.log("m", modalData.value);
+const remove =async  (e: any, id: string) => {  
+  await todosStore.remove(e, id);
   updateFilteredTodos();
-  
-  //изменить в сторе
 }
 
-const saveData = (data: any) => {
+const saveData = async (data: any) => {
   showModal.value = false;
-  console.log("ada", data);
-  if (data?.id) {
-    todos[data?.id].done = data.done??false;
-    todos[data?.id].name = data.name;
-    todos[data?.id].description = data.description;
-    todos[data?.id].date = data.date;
-  } else {
-    todos.push({...data, id: Math.random()});
-  }
+  console.log(data)
+  await todosStore.saveData(data);
   modalData.value = {};
   updateFilteredTodos();
 }

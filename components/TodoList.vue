@@ -11,14 +11,14 @@
 
 <script setup lang="ts">
 const todosStore = useTodosStore();
-const todos = todosStore.todos;
-const filteredTodos = ref<any>(todos);
+const todos = ref(todosStore.todos);
+const filteredTodos = ref<any>(todos.value);
 const showModal = ref<Boolean>(false);
 const modalData = ref<Object>({
-  name: null,
-  description: null,
-  done: null,
-  date: null
+  name: "",
+  description: '',
+  done: false,
+  date: new Date()
 });
 const props = defineProps({
   today: {
@@ -36,17 +36,16 @@ const changeStatus = async (e: boolean, id: string) => {
 
 const edit = (e: any, id: string) => {
   showModal.value = true;
-  modalData.value = todos.find(todo => todo.id === id); 
+  modalData.value = todos.value.find(todo => todo.id === id); 
 }
 
-const remove =async  (e: any, id: string) => {  
+const remove = async (e: any, id: string) => {  
   await todosStore.remove(e, id);
   updateFilteredTodos();
 }
 
 const saveData = async (data: any) => {
   showModal.value = false;
-  console.log(data)
   await todosStore.saveData(data);
   modalData.value = {};
   updateFilteredTodos();
@@ -55,8 +54,8 @@ const saveData = async (data: any) => {
 const updateFilteredTodos = () => {
     if (today) {
       const startDate = new Date();
-      filteredTodos.value = todos.filter((todo) => {
-        const todoDate = new Date(todo.date);
+      filteredTodos.value = todos.value.filter((todo) => {
+        const todoDate = new Date(todo.date.seconds*1000);
         if ( todoDate.getFullYear() == startDate.getFullYear() &&
          todoDate.getMonth() == startDate.getMonth() &&
          todoDate.getDate() == startDate.getDate())

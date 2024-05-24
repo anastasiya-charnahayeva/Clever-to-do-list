@@ -47,7 +47,7 @@
 <script setup lang="ts">
 const maxContainIndex = 2;
 const todosStore = useTodosStore();
-const todos = todosStore.todos;
+const todos = ref(todosStore.todos);
 const showInfoModal = ref<boolean>(false);
 const currentYear = ref<number>(new Date().getFullYear());
 const currentMonth = ref<number>(new Date().getMonth());
@@ -155,8 +155,8 @@ const showDate = computed(() => {
 const getEventByDate = (day: any) => {
       let res = [];
       const startDate = new Date(currentYear.value, currentMonth.value, day.date)
-      res = todos.filter((todo) => {
-        const todoDate = new Date(todo.date);
+      res = todos.value.filter((todo) => {
+        const todoDate = new Date(todo.date.seconds*1000);
         if ( todoDate.getFullYear() == startDate.getFullYear() &&
          todoDate.getMonth() == startDate.getMonth() &&
          todoDate.getDate() == startDate.getDate())

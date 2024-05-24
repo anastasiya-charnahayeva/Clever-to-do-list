@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 const todosStore = useTodosStore();
-const todos = todosStore.todos;
+const todos = ref(todosStore.todos);
 const props = defineProps({
   todo: {
     type: Object,

@@ -15,6 +15,7 @@ export default defineNuxtConfig({
   modules: [
     'nuxt-vuefire',
     '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
   ],
   vuefire: {
     auth: true, // enable Firebase Authentication

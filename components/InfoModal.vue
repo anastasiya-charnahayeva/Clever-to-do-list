@@ -20,7 +20,7 @@
                       <h2 class="text-center text-xl mb-4">{{showDateTitle}}</h2>
                       <TodoItem v-for="todo in filteredTodos" :key="todo.id" :todo="todo" @toggleChanging="(e) => changeStatus(e, todo.id)" @removeItem="(e) => remove(e, todo.id)" :infoModal="true"/>
                   </div>
-                  <button class="text-xs mt-2 bg-transparent hover:bg-red-500 text-red-700 hover:text-white border border-red-500 hover:border-transparent rounded-full h-8 w-8 pb-1 flex items-center justify-center" @click="$emit('close')">
+                  <button class="text-xs mt-2 bg-transparent hover:bg-red-500 text-red-700 hover:text-white border border-red-500 hover:border-transparent rounded-full h-8 w-8 pb-1 flex items-center justify-center" @click="closeModal">
                       &#9587;
                   </button>
                 </div>
@@ -30,8 +30,11 @@
 </template>
 
 <script setup lang="ts">
+const emit = defineEmits<{
+  (event: 'close'): void;
+}>();
 const todosStore = useTodosStore();
-const todos = todosStore.todos;
+const todos = ref(todosStore.todos);
 const props = defineProps({
   showDateTitle: {
     type: String,
@@ -53,15 +56,20 @@ const changeStatus = async (e: boolean, id: string) => {
   updateFilteredTodos();
 }
 
+const closeModal = () => {
+  emit('close');
+}
+
 const remove = async (e: any, id: string) => {  
+  closeModal();
   await todosStore.remove(e, id);
   updateFilteredTodos();
 }
 
 const updateFilteredTodos = () => {
    const startDate = new Date(date);
-      filteredTodos.value = todos.filter((todo) => {
-        const todoDate = new Date(todo.date);
+      filteredTodos.value = todos.value.filter((todo) => {
+        const todoDate = new Date(todo.date.seconds*1000);
         if (todoDate.getFullYear() == startDate.getFullYear() &&
          todoDate.getMonth() == startDate.getMonth() &&
          todoDate.getDate() == startDate.getDate())         

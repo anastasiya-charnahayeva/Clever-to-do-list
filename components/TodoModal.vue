@@ -38,7 +38,7 @@
                                         teleport
                                         auto-apply
                                         input-class-name="dp-custom-input"
-                                        :placeholder="data?.date??'Select date'"
+                                        :placeholder="data?.date?.seconds?new Date(data?.date?.seconds*1000):'Select date'"
                                     />
                                 </div>
                             </div>
@@ -70,9 +70,7 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 const emit = defineEmits<{
   (event: 'saveData', payload: any): void;
-}>()
-// const todosStore = useTodosStore();
-// const todos = todosStore.getTodos;
+}>();
 const props = defineProps({
   showModal: {
     type: Boolean,
@@ -88,8 +86,6 @@ const name = ref<string>();
 const description = ref<string>();
 const date = ref<any>();
 const done = ref<boolean>(false);
-// const newData = ref<Object>();
-
 
 const saveData = () => {
     emit('saveData', {name: name.value, description: description.value, done: done.value, id: data?.id, date: date.value});
@@ -97,11 +93,10 @@ const saveData = () => {
 
 onMounted(() => {
     if (data) {
-        console.log("pp", data)
         name.value = data?.name;
         description.value = data?.description;
         done.value = data?.done;
-        date.value = data?.date;
+        date.value = new Date(data?.date?.seconds*1000);
     }
 })
 </script>
